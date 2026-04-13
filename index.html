@@ -780,45 +780,6 @@
   }, { threshold: 0.07 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-  // ── Custom cursor ─────────────────────────────────────────────────────
-  const cursor = document.createElement('div');
-  cursor.id = 'cursor';
-  cursor.style.cssText = `
-    position:fixed; width:12px; height:12px; border-radius:50%;
-    background:var(--terracotta); pointer-events:none; z-index:9999;
-    transform:translate(-50%,-50%); transition:transform 0.15s ease, opacity 0.3s;
-    mix-blend-mode:multiply;
-  `;
-  const cursorRing = document.createElement('div');
-  cursorRing.style.cssText = `
-    position:fixed; width:36px; height:36px; border-radius:50%;
-    border:1px solid rgba(196,96,58,0.4); pointer-events:none; z-index:9998;
-    transform:translate(-50%,-50%); transition:all 0.35s cubic-bezier(0.23,1,0.32,1);
-  `;
-  document.body.appendChild(cursor);
-  document.body.appendChild(cursorRing);
-
-  let mx = 0, my = 0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-    cursorRing.style.left = mx + 'px'; cursorRing.style.top = my + 'px';
-  });
-
-  // Cursor grows on hover over interactive elements
-  document.querySelectorAll('a, button, .skill-card, .project-card, .exp-nav-item').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
-      cursor.style.opacity = '0.5';
-      cursorRing.style.transform = 'translate(-50%,-50%) scale(1.6)';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-      cursor.style.opacity = '1';
-      cursorRing.style.transform = 'translate(-50%,-50%) scale(1)';
-    });
-  });
-
   // ── Parallax on hero ─────────────────────────────────────────────────
   const heroLeft = document.querySelector('.hero-left');
   const heroRight = document.querySelector('.hero-right');
@@ -830,14 +791,33 @@
     }
   }, { passive: true });
 
+  // ── Profile photo 3D tilt on mouse move ──────────────────────────────
+  const photoWrap = document.querySelector('.hero-photo-wrap');
+  const heroRightEl = document.querySelector('.hero-right');
+  if (heroRightEl && photoWrap) {
+    heroRightEl.addEventListener('mousemove', e => {
+      const r = photoWrap.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const x = (e.clientX - cx) / (r.width / 2);
+      const y = (e.clientY - cy) / (r.height / 2);
+      photoWrap.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.03)`;
+      photoWrap.style.transition = 'transform 0.1s ease';
+      photoWrap.style.boxShadow = `${-x * 18}px ${-y * 18}px 40px rgba(196,96,58,0.2)`;
+    });
+    heroRightEl.addEventListener('mouseleave', () => {
+      photoWrap.style.transform = 'perspective(700px) rotateY(0) rotateX(0) scale(1)';
+      photoWrap.style.transition = 'transform 0.7s cubic-bezier(0.23,1,0.32,1)';
+      photoWrap.style.boxShadow = 'none';
+    });
+  }
+
   // ── Magnetic buttons ─────────────────────────────────────────────────
   document.querySelectorAll('.btn-primary, .btn-outline, .yt-btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const r = btn.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const cy = r.top + r.height / 2;
-      const dx = (e.clientX - cx) * 0.3;
-      const dy = (e.clientY - cy) * 0.3;
+      const dx = (e.clientX - r.left - r.width / 2) * 0.3;
+      const dy = (e.clientY - r.top - r.height / 2) * 0.3;
       btn.style.transform = `translate(${dx}px, ${dy}px)`;
     });
     btn.addEventListener('mouseleave', () => {
@@ -850,8 +830,7 @@
   });
 
   // ── Nav slide-in on load ─────────────────────────────────────────────
-  const navLinks = document.querySelectorAll('.nav-links li');
-  navLinks.forEach((li, i) => {
+  document.querySelectorAll('.nav-links li').forEach((li, i) => {
     li.style.opacity = '0';
     li.style.transform = 'translateY(-10px)';
     setTimeout(() => {
@@ -861,24 +840,7 @@
     }, 100 + i * 80);
   });
 
-  // ── Smooth section title character reveal ────────────────────────────
-  document.querySelectorAll('.section-heading').forEach(h => {
-    const text = h.innerHTML;
-    // Only do this for plain text nodes
-    if (!h.querySelector('em')) {
-      h.style.opacity = '0';
-      const sectionObs = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) {
-          h.style.transition = 'opacity 0.8s ease';
-          h.style.opacity = '1';
-          sectionObs.disconnect();
-        }
-      }, { threshold: 0.3 });
-      sectionObs.observe(h);
-    }
-  });
-
-  // ── Skill cards tilt on hover ─────────────────────────────────────────
+  // ── Skill cards tilt ─────────────────────────────────────────────────
   document.querySelectorAll('.skill-card').forEach(card => {
     card.addEventListener('mousemove', e => {
       const r = card.getBoundingClientRect();
@@ -910,7 +872,7 @@
     });
   });
 
-  // ── Smooth scroll for nav links ───────────────────────────────────────
+  // ── Smooth scroll ─────────────────────────────────────────────────────
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
