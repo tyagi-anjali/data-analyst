@@ -772,13 +772,35 @@
     el.classList.add('active');
   }
 
-  // ── Scroll reveal (staggered per section) ────────────────────────────
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+  // ── Float-up scroll reveal on ALL elements ────────────────────────────
+  const allReveal = document.querySelectorAll(
+    'section > *, .about-left > *, .about-right > *, ' +
+    '.skill-card, .project-card, .timeline-item, ' +
+    '.exp-grid, .edu-card, .contact-link, .yt-left > *, .yt-right > *, ' +
+    '.info-block, .hero-left > *, .hero-right'
+  );
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const delay = el.dataset.delay || i * 60;
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.transform = el.style.transform.replace(/translateY\([^)]+\)/, 'translateY(0)');
+          el.style.transition = 'opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1)';
+        }, delay);
+        revealObserver.unobserve(el);
+      }
     });
-  }, { threshold: 0.07 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  allReveal.forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = (el.style.transform || '') + ' translateY(30px)';
+    el.dataset.delay = i % 8 * 80;
+    revealObserver.observe(el);
+  });
 
   // ── Parallax on hero ─────────────────────────────────────────────────
   const heroLeft = document.querySelector('.hero-left');
@@ -786,28 +808,26 @@
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
     if (y < window.innerHeight) {
-      heroLeft.style.transform = `translateY(${y * 0.18}px)`;
-      heroRight.style.transform = `translateY(${y * 0.09}px)`;
+      heroLeft.style.transform = `translateY(${y * 0.12}px)`;
+      heroRight.style.transform = `translateY(${y * 0.06}px)`;
     }
   }, { passive: true });
 
-  // ── Profile photo 3D tilt on mouse move ──────────────────────────────
+  // ── Profile photo subtle 3D tilt ─────────────────────────────────────
   const photoWrap = document.querySelector('.hero-photo-wrap');
   const heroRightEl = document.querySelector('.hero-right');
   if (heroRightEl && photoWrap) {
     heroRightEl.addEventListener('mousemove', e => {
       const r = photoWrap.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const cy = r.top + r.height / 2;
-      const x = (e.clientX - cx) / (r.width / 2);
-      const y = (e.clientY - cy) / (r.height / 2);
-      photoWrap.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.03)`;
-      photoWrap.style.transition = 'transform 0.1s ease';
-      photoWrap.style.boxShadow = `${-x * 18}px ${-y * 18}px 40px rgba(196,96,58,0.2)`;
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      photoWrap.style.transform = `perspective(900px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) scale(1.02)`;
+      photoWrap.style.transition = 'transform 0.15s ease';
+      photoWrap.style.boxShadow = `${-x * 10}px ${-y * 10}px 30px rgba(196,96,58,0.15)`;
     });
     heroRightEl.addEventListener('mouseleave', () => {
-      photoWrap.style.transform = 'perspective(700px) rotateY(0) rotateX(0) scale(1)';
-      photoWrap.style.transition = 'transform 0.7s cubic-bezier(0.23,1,0.32,1)';
+      photoWrap.style.transform = 'perspective(900px) rotateY(0) rotateX(0) scale(1)';
+      photoWrap.style.transition = 'transform 0.8s cubic-bezier(0.23,1,0.32,1)';
       photoWrap.style.boxShadow = 'none';
     });
   }
@@ -832,12 +852,12 @@
   // ── Nav slide-in on load ─────────────────────────────────────────────
   document.querySelectorAll('.nav-links li').forEach((li, i) => {
     li.style.opacity = '0';
-    li.style.transform = 'translateY(-10px)';
+    li.style.transform = 'translateY(-8px)';
     setTimeout(() => {
       li.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
-    }, 100 + i * 80);
+    }, 200 + i * 70);
   });
 
   // ── Skill cards tilt ─────────────────────────────────────────────────
