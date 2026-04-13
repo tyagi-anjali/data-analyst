@@ -764,18 +764,160 @@
 </footer>
 
 <script>
+  // ── Experience tab switching ──────────────────────────────────────────
   function showExp(id, el) {
     document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.exp-nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('exp-' + id).classList.add('active');
     el.classList.add('active');
   }
+
+  // ── Scroll reveal (staggered per section) ────────────────────────────
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
-      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 100);
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
     });
-  }, { threshold: 0.08 });
+  }, { threshold: 0.07 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── Custom cursor ─────────────────────────────────────────────────────
+  const cursor = document.createElement('div');
+  cursor.id = 'cursor';
+  cursor.style.cssText = `
+    position:fixed; width:12px; height:12px; border-radius:50%;
+    background:var(--terracotta); pointer-events:none; z-index:9999;
+    transform:translate(-50%,-50%); transition:transform 0.15s ease, opacity 0.3s;
+    mix-blend-mode:multiply;
+  `;
+  const cursorRing = document.createElement('div');
+  cursorRing.style.cssText = `
+    position:fixed; width:36px; height:36px; border-radius:50%;
+    border:1px solid rgba(196,96,58,0.4); pointer-events:none; z-index:9998;
+    transform:translate(-50%,-50%); transition:all 0.35s cubic-bezier(0.23,1,0.32,1);
+  `;
+  document.body.appendChild(cursor);
+  document.body.appendChild(cursorRing);
+
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    cursorRing.style.left = mx + 'px'; cursorRing.style.top = my + 'px';
+  });
+
+  // Cursor grows on hover over interactive elements
+  document.querySelectorAll('a, button, .skill-card, .project-card, .exp-nav-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
+      cursor.style.opacity = '0.5';
+      cursorRing.style.transform = 'translate(-50%,-50%) scale(1.6)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      cursor.style.opacity = '1';
+      cursorRing.style.transform = 'translate(-50%,-50%) scale(1)';
+    });
+  });
+
+  // ── Parallax on hero ─────────────────────────────────────────────────
+  const heroLeft = document.querySelector('.hero-left');
+  const heroRight = document.querySelector('.hero-right');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight) {
+      heroLeft.style.transform = `translateY(${y * 0.18}px)`;
+      heroRight.style.transform = `translateY(${y * 0.09}px)`;
+    }
+  }, { passive: true });
+
+  // ── Magnetic buttons ─────────────────────────────────────────────────
+  document.querySelectorAll('.btn-primary, .btn-outline, .yt-btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dx = (e.clientX - cx) * 0.3;
+      const dy = (e.clientY - cy) * 0.3;
+      btn.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0,0)';
+      btn.style.transition = 'transform 0.5s cubic-bezier(0.23,1,0.32,1)';
+    });
+    btn.addEventListener('mouseenter', () => {
+      btn.style.transition = 'transform 0.1s ease';
+    });
+  });
+
+  // ── Nav slide-in on load ─────────────────────────────────────────────
+  const navLinks = document.querySelectorAll('.nav-links li');
+  navLinks.forEach((li, i) => {
+    li.style.opacity = '0';
+    li.style.transform = 'translateY(-10px)';
+    setTimeout(() => {
+      li.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      li.style.opacity = '1';
+      li.style.transform = 'translateY(0)';
+    }, 100 + i * 80);
+  });
+
+  // ── Smooth section title character reveal ────────────────────────────
+  document.querySelectorAll('.section-heading').forEach(h => {
+    const text = h.innerHTML;
+    // Only do this for plain text nodes
+    if (!h.querySelector('em')) {
+      h.style.opacity = '0';
+      const sectionObs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          h.style.transition = 'opacity 0.8s ease';
+          h.style.opacity = '1';
+          sectionObs.disconnect();
+        }
+      }, { threshold: 0.3 });
+      sectionObs.observe(h);
+    }
+  });
+
+  // ── Skill cards tilt on hover ─────────────────────────────────────────
+  document.querySelectorAll('.skill-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateZ(4px)`;
+      card.style.transition = 'transform 0.1s ease';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(600px) rotateY(0) rotateX(0) translateZ(0)';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.23,1,0.32,1)';
+    });
+  });
+
+  // ── Project cards tilt ────────────────────────────────────────────────
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) translateZ(6px)`;
+      card.style.transition = 'transform 0.1s ease';
+      card.style.boxShadow = `${-x * 20}px ${-y * 20}px 40px rgba(30,26,22,0.12)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateY(0) rotateX(0) translateZ(0)';
+      card.style.transition = 'transform 0.6s cubic-bezier(0.23,1,0.32,1)';
+      card.style.boxShadow = 'none';
+    });
+  });
+
+  // ── Smooth scroll for nav links ───────────────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 </script>
 </body>
 </html>
