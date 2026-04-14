@@ -772,35 +772,48 @@
     el.classList.add('active');
   }
 
-  // ── Float-up scroll reveal on ALL elements ────────────────────────────
-  const allReveal = document.querySelectorAll(
+  // ── Float-up scroll reveal — both directions, every scroll ──────────
+  const revealEls = document.querySelectorAll(
     'section > *, .about-left > *, .about-right > *, ' +
-    '.skill-card, .project-card, .timeline-item, ' +
+    '.skill-card, .project-card, ' +
     '.exp-grid, .edu-card, .contact-link, .yt-left > *, .yt-right > *, ' +
-    '.info-block, .hero-left > *, .hero-right'
+    '.info-block, .hero-left > *'
   );
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const delay = el.dataset.delay || i * 60;
-        setTimeout(() => {
-          el.style.opacity = '1';
-          el.style.transform = el.style.transform.replace(/translateY\([^)]+\)/, 'translateY(0)');
-          el.style.transition = 'opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1)';
-        }, delay);
-        revealObserver.unobserve(el);
+  revealEls.forEach(el => {
+    el.style.transition = 'opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1)';
+  });
+
+  function checkReveal() {
+    const wh = window.innerHeight;
+    revealEls.forEach((el, i) => {
+      const rect = el.getBoundingClientRect();
+      const inView = rect.top < wh * 0.92 && rect.bottom > wh * 0.08;
+      if (inView) {
+        el.style.opacity = '1';
+        el.style.transform = el.style.transform
+          ? el.style.transform.replace(/translateY\([^)]+\)/g, 'translateY(0)')
+          : 'translateY(0)';
+      } else {
+        el.style.opacity = '0';
+        const direction = rect.top >= wh * 0.92 ? '30px' : '-30px';
+        el.style.transform = el.style.transform
+          ? el.style.transform.replace(/translateY\([^)]+\)/g, `translateY(${direction})`)
+          : `translateY(${direction})`;
       }
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  }
 
-  allReveal.forEach((el, i) => {
+  // Set initial hidden state
+  revealEls.forEach(el => {
     el.style.opacity = '0';
-    el.style.transform = (el.style.transform || '') + ' translateY(30px)';
-    el.dataset.delay = i % 8 * 80;
-    revealObserver.observe(el);
+    el.style.transform = 'translateY(30px)';
   });
+
+  // Run on scroll and on load
+  window.addEventListener('scroll', checkReveal, { passive: true });
+  window.addEventListener('resize', checkReveal, { passive: true });
+  setTimeout(checkReveal, 100);
 
   // ── Parallax on hero ─────────────────────────────────────────────────
   const heroLeft = document.querySelector('.hero-left');
