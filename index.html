@@ -191,8 +191,9 @@
     margin-bottom: 1.2rem;
   }
   .about-right { padding: 5rem 4rem; background: var(--warm-paper); }
-  .info-block { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
-  .info-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .info-block { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); padding: 1rem 1rem 1rem 1rem; cursor: default; transition: background 0.3s ease, border-left 0.3s ease, padding-left 0.3s ease, transform 0.3s cubic-bezier(0.23,1,0.32,1); border-left: 3px solid transparent; }
+  .info-block:last-child { border-bottom: none; margin-bottom: 0; }
+  .info-block:hover { background: rgba(196,96,58,0.07); border-left: 3px solid var(--terracotta); padding-left: 1.2rem; transform: translateX(4px); }
   .info-block h4 {
     font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em;
     text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.5rem;
@@ -773,34 +774,44 @@
   }
 
   // ── Float-up scroll reveal — both directions, every scroll ──────────
+  // Note: .info-block excluded so CSS hover transform works correctly
   const revealEls = document.querySelectorAll(
-    'section > *, .about-left > *, .about-right > *, ' +
+    'section > *, .about-left > *, ' +
     '.skill-card, .project-card, ' +
     '.exp-grid, .edu-card, .contact-link, .yt-left > *, .yt-right > *, ' +
-    '.info-block, .hero-left > *'
+    '.hero-left > *'
   );
 
   revealEls.forEach(el => {
     el.style.transition = 'opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1)';
   });
 
+  // Info-blocks get their own simple reveal (no inline transform so hover CSS works)
+  const infoBlocks = document.querySelectorAll('.info-block');
+  infoBlocks.forEach(el => {
+    el.style.transition = 'opacity 0.7s cubic-bezier(0.23,1,0.32,1), background 0.3s ease, border-left 0.3s ease, padding-left 0.3s ease, transform 0.3s cubic-bezier(0.23,1,0.32,1)';
+  });
+
   function checkReveal() {
     const wh = window.innerHeight;
-    revealEls.forEach((el, i) => {
+
+    revealEls.forEach(el => {
       const rect = el.getBoundingClientRect();
       const inView = rect.top < wh * 0.92 && rect.bottom > wh * 0.08;
       if (inView) {
         el.style.opacity = '1';
-        el.style.transform = el.style.transform
-          ? el.style.transform.replace(/translateY\([^)]+\)/g, 'translateY(0)')
-          : 'translateY(0)';
+        el.style.transform = 'translateY(0)';
       } else {
         el.style.opacity = '0';
-        const direction = rect.top >= wh * 0.92 ? '30px' : '-30px';
-        el.style.transform = el.style.transform
-          ? el.style.transform.replace(/translateY\([^)]+\)/g, `translateY(${direction})`)
-          : `translateY(${direction})`;
+        el.style.transform = rect.top >= wh * 0.92 ? 'translateY(30px)' : 'translateY(-30px)';
       }
+    });
+
+    // Info-blocks: opacity only, no transform (so hover transform works)
+    infoBlocks.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const inView = rect.top < wh * 0.92 && rect.bottom > wh * 0.08;
+      el.style.opacity = inView ? '1' : '0';
     });
   }
 
@@ -809,6 +820,7 @@
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
   });
+  infoBlocks.forEach(el => { el.style.opacity = '0'; });
 
   // Run on scroll and on load
   window.addEventListener('scroll', checkReveal, { passive: true });
