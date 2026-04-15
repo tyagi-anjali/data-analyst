@@ -123,19 +123,20 @@
   /* Right: photo + caption */
   .hero-right {
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
+    align-items: center; justify-content: flex-start;
     background: var(--warm-paper);
     padding: 0;
+    overflow: hidden;
   }
   .photo-card {
     display: flex; flex-direction: column;
-    width: 260px;
-    box-shadow: 0 4px 24px rgba(30,26,22,0.1);
+    width: 100%;
+    flex: 1;
   }
   .hero-photo-wrap {
-    width: 260px; height: 320px;
+    width: 100%;
+    flex: 1;
     overflow: hidden;
-    flex-shrink: 0;
     position: relative;
   }
   .hero-photo-wrap::after {
@@ -152,9 +153,10 @@
     display: block;
   }
   .hero-caption {
-    width: 260px;
-    padding: 0.7rem 1rem;
+    width: 100%;
+    padding: 0.9rem 1.5rem;
     background: var(--ink);
+    flex-shrink: 0;
   }
   .hero-caption p {
     font-size: 0.68rem; color: rgba(255,255,255,0.7);
@@ -284,6 +286,15 @@
     font-size: 0.82rem; color: var(--ink); line-height: 1.6;
     font-family: 'Libre Baskerville', serif; font-style: italic;
   }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--terracotta);
+    text-decoration: none; border-bottom: 1px solid var(--terracotta);
+    padding-bottom: 0.1rem; transition: opacity 0.2s;
+  }
+  .project-link:hover { opacity: 0.7; }
 
   /* ── EXPERIENCE ── */
   #experience { padding: 5rem 4rem; border-bottom: 1px solid var(--border); }
@@ -612,6 +623,7 @@
         <div class="project-tools">Python · Scikit-learn · Seaborn · Power BI · DAX</div>
         <p>Analyzed ~130,000 transit records from the City of Toronto, merged weather data, and built a regression model to identify delay predictors.</p>
         <div class="project-finding">Only 29% of trips ran on time. Nearly 30% experienced severe delays. Recommended increased bus frequency in February and on weekends.</div>
+        <a href="https://app.powerbi.com/groups/me/reports/83ed9126-8709-4514-9871-60481cc65c16/e8b6be9760910a78a4bc?experience=power-bi" target="_blank" class="project-link">View Dashboard →</a>
       </div>
     </div>
     <div class="project-card">
@@ -625,6 +637,7 @@
         <div class="project-tools">Python · SQL · Power BI</div>
         <p>Analyzed 2,233 customers across six countries with thorough SQL data cleaning and analytical modeling.</p>
         <div class="project-finding">Campaign 6 outperformed all others at 14.87%. Wines led at $678K. Customers without children consistently outspent those with children.</div>
+        <a href="https://app.powerbi.com/groups/me/reports/45fb7111-3f0c-48b3-b400-3eae9d37142c/daec7aca715a0d215a1c?experience=power-bi" target="_blank" class="project-link">View Dashboard →</a>
       </div>
     </div>
     <div class="project-card">
@@ -638,6 +651,7 @@
         <div class="project-tools">Python · SQL · Power BI</div>
         <p>Analyzed 3,900 retail transactions using Python and 10 SQL business queries covering revenue, segmentation, and subscription behavior.</p>
         <div class="project-finding">3,300 loyal customers — yet most were not subscribed, identifying a major retention opportunity.</div>
+        <a href="https://app.powerbi.com/groups/me/reports/d49e4e99-7f00-4053-9f4c-1c00bb233f6d/eee6f63b2ff0dab326cf?experience=power-bi" target="_blank" class="project-link">View Dashboard →</a>
       </div>
     </div>
     <div class="project-card">
@@ -849,21 +863,19 @@
   }, { passive: true });
 
   // ── Profile photo subtle 3D tilt (no translateY — keeps ::after line) ─
-  const photoWrap = document.querySelector('.photo-card');
+  const photoWrap = document.querySelector('.hero-photo-wrap');
   const heroRightEl = document.querySelector('.hero-right');
   if (heroRightEl && photoWrap) {
     heroRightEl.addEventListener('mousemove', e => {
-      const r = photoWrap.getBoundingClientRect();
+      const r = heroRightEl.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width - 0.5;
       const y = (e.clientY - r.top) / r.height - 0.5;
-      photoWrap.style.transform = `perspective(900px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) scale(1.02)`;
+      photoWrap.style.transform = `scale(1.03) translate(${x * -6}px, ${y * -6}px)`;
       photoWrap.style.transition = 'transform 0.15s ease';
-      photoWrap.style.boxShadow = `${-x * 10}px ${-y * 10}px 30px rgba(196,96,58,0.15)`;
     });
     heroRightEl.addEventListener('mouseleave', () => {
       photoWrap.style.transform = 'none';
       photoWrap.style.transition = 'transform 0.8s cubic-bezier(0.23,1,0.32,1)';
-      photoWrap.style.boxShadow = 'none';
     });
   }
 
