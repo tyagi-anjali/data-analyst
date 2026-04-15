@@ -33,7 +33,7 @@
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     background: var(--off-white);
-    border-bottom: 2px solid var(--ink);
+    border-bottom: 1px solid rgba(30,26,22,0.18);
     padding: 0 4rem;
     display: flex; align-items: stretch; justify-content: space-between;
   }
@@ -65,13 +65,13 @@
     margin-top: 55px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border-bottom: 2px solid var(--ink);
+    border-bottom: 1px solid rgba(30,26,22,0.15);
   }
 
   /* Left: all text */
   .hero-left {
     padding: 3rem 4rem;
-    border-right: 2px solid var(--ink);
+    border-right: 1px solid var(--border);
     display: flex; flex-direction: column; justify-content: center;
   }
   .hero-name-row {
@@ -113,7 +113,7 @@
   }
   .btn-primary:hover { background: var(--terracotta-light); }
   .btn-outline {
-    padding: 0.85rem 2rem; border: 2px solid var(--ink);
+    padding: 0.85rem 2rem; border: 1px solid var(--border);
     color: var(--ink); font-size: 0.75rem; font-weight: 500;
     letter-spacing: 0.12em; text-transform: uppercase;
     text-decoration: none; transition: all 0.2s;
@@ -131,8 +131,7 @@
   .hero-photo-wrap {
     width: 260px; height: 320px;
     overflow: hidden;
-    border: 2px solid var(--ink);
-    border-bottom: none;
+    border: 1px solid rgba(30,26,22,0.15);
     flex-shrink: 0;
   }
   .hero-photo-wrap img {
@@ -143,7 +142,8 @@
   .hero-caption {
     width: 260px;
     padding: 0.7rem 1rem;
-    border: 2px solid var(--ink);
+    border: 1px solid rgba(30,26,22,0.15);
+    border-top: 1px solid rgba(30,26,22,0.25);
     background: var(--ink);
   }
   .hero-caption p {
@@ -179,11 +179,11 @@
   /* ── ABOUT ── */
   #about {
     display: grid; grid-template-columns: 1fr 1fr;
-    border-bottom: 2px solid var(--ink);
+    border-bottom: 1px solid var(--border);
   }
   .about-left {
     padding: 5rem 4rem;
-    border-right: 2px solid var(--ink);
+    border-right: 1px solid var(--border);
   }
   .about-left p {
     font-family: 'Libre Baskerville', serif;
@@ -201,10 +201,10 @@
   .info-block p { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.6; }
 
   /* ── SKILLS ── */
-  #skills { padding: 5rem 4rem; border-bottom: 2px solid var(--ink); }
+  #skills { padding: 5rem 4rem; border-bottom: 1px solid var(--border); }
   .skills-grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
-    border: 2px solid var(--ink);
+    border: 1px solid var(--border);
   }
   .skill-card {
     padding: 2rem; border-right: 1px solid var(--ink);
@@ -232,10 +232,10 @@
   .tag.hot { border-color: var(--terracotta); color: var(--terracotta); background: transparent; }
 
   /* ── PROJECTS ── */
-  #projects { padding: 5rem 4rem; border-bottom: 2px solid var(--ink); }
+  #projects { padding: 5rem 4rem; border-bottom: 1px solid var(--border); }
   .projects-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-    border: 2px solid var(--ink);
+    border: 1px solid var(--border);
   }
   .project-card {
     border-right: 1px solid var(--ink);
@@ -276,12 +276,12 @@
   }
 
   /* ── EXPERIENCE ── */
-  #experience { padding: 5rem 4rem; border-bottom: 2px solid var(--ink); }
+  #experience { padding: 5rem 4rem; border-bottom: 1px solid var(--border); }
   .exp-grid {
     display: grid; grid-template-columns: 200px 1fr;
-    border: 2px solid var(--ink);
+    border: 1px solid var(--border);
   }
-  .exp-nav { border-right: 2px solid var(--ink); display: flex; flex-direction: column; }
+  .exp-nav { border-right: 1px solid var(--border); display: flex; flex-direction: column; }
   .exp-nav-item {
     padding: 1.5rem; border-bottom: 1px solid var(--ink);
     cursor: pointer; transition: background 0.2s;
@@ -315,11 +315,11 @@
   /* ── YOUTUBE ── */
   #youtube {
     display: grid; grid-template-columns: 1fr 1fr;
-    border-bottom: 2px solid var(--ink); min-height: 380px;
+    border-bottom: 1px solid var(--border); min-height: 380px;
   }
   .yt-left {
     background: var(--terracotta); padding: 5rem 4rem;
-    border-right: 2px solid var(--ink);
+    border-right: 1px solid var(--border);
     display: flex; flex-direction: column; justify-content: space-between;
   }
   .yt-left-label {
@@ -352,10 +352,10 @@
   }
 
   /* ── EDUCATION ── */
-  #education { padding: 5rem 4rem; border-bottom: 2px solid var(--ink); }
+  #education { padding: 5rem 4rem; border-bottom: 1px solid var(--border); }
   .edu-grid {
     display: grid; grid-template-columns: repeat(4, 1fr);
-    border: 2px solid var(--ink);
+    border: 1px solid var(--border);
   }
   .edu-card {
     padding: 2rem; border-right: 1px solid var(--ink); transition: background 0.2s;
@@ -377,9 +377,9 @@
   /* ── CONTACT ── */
   #contact {
     display: grid; grid-template-columns: 1fr 1fr;
-    border-bottom: 2px solid var(--ink);
+    border-bottom: 1px solid var(--border);
   }
-  .contact-left { padding: 5rem 4rem; border-right: 2px solid var(--ink); }
+  .contact-left { padding: 5rem 4rem; border-right: 1px solid var(--border); }
   .contact-left h2 {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2rem, 4vw, 3.5rem);
@@ -418,7 +418,7 @@
     nav { padding: 0 1.5rem; }
     .nav-links { display: none; }
     #hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 4rem 1.5rem; border-right: none; border-bottom: 2px solid var(--ink); }
+    .hero-left { padding: 4rem 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
     .hero-right { min-height: 300px; }
     #about { grid-template-columns: 1fr; }
     .about-left, .about-right { padding: 3rem 1.5rem; border-right: none; }
@@ -431,7 +431,7 @@
     #youtube, #contact { grid-template-columns: 1fr; }
     .yt-left, .yt-right, .contact-left, .contact-right { padding: 3rem 1.5rem; border-right: none; }
     .exp-grid { grid-template-columns: 1fr; }
-    .exp-nav { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 2px solid var(--ink); }
+    .exp-nav { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); }
     .exp-nav-item { border-bottom: none; border-right: 1px solid var(--ink); min-width: 120px; }
     footer { padding: 1.5rem; flex-direction: column; gap: 0.3rem; text-align: center; }
   }
