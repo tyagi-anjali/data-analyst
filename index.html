@@ -786,7 +786,7 @@
   // ── Float-up scroll reveal — both directions, every scroll ──────────
   // Note: .info-block excluded so CSS hover transform works correctly
   const revealEls = document.querySelectorAll(
-    'section > *, .about-left > *, ' +
+    'section > *:not(.hero-left):not(.hero-right), .about-left > *, ' +
     '.skill-card, .project-card, ' +
     '.exp-grid, .edu-card, .contact-link, .yt-left > *, .yt-right > *, ' +
     '.hero-left > *'
@@ -837,18 +837,16 @@
   window.addEventListener('resize', checkReveal, { passive: true });
   setTimeout(checkReveal, 100);
 
-  // ── Parallax on hero ─────────────────────────────────────────────────
+  // ── Parallax on hero text only (not photo side) ──────────────────────
   const heroLeft = document.querySelector('.hero-left');
-  const heroRight = document.querySelector('.hero-right');
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
     if (y < window.innerHeight) {
       heroLeft.style.transform = `translateY(${y * 0.12}px)`;
-      heroRight.style.transform = `translateY(${y * 0.06}px)`;
     }
   }, { passive: true });
 
-  // ── Profile photo subtle 3D tilt ─────────────────────────────────────
+  // ── Profile photo subtle 3D tilt (no translateY — keeps ::after line) ─
   const photoWrap = document.querySelector('.hero-photo-wrap');
   const heroRightEl = document.querySelector('.hero-right');
   if (heroRightEl && photoWrap) {
@@ -861,7 +859,7 @@
       photoWrap.style.boxShadow = `${-x * 10}px ${-y * 10}px 30px rgba(196,96,58,0.15)`;
     });
     heroRightEl.addEventListener('mouseleave', () => {
-      photoWrap.style.transform = 'perspective(900px) rotateY(0) rotateX(0) scale(1)';
+      photoWrap.style.transform = 'none';
       photoWrap.style.transition = 'transform 0.8s cubic-bezier(0.23,1,0.32,1)';
       photoWrap.style.boxShadow = 'none';
     });
