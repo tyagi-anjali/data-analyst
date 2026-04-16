@@ -438,9 +438,32 @@
   @media (max-width: 900px) {
     nav { padding: 0 1.5rem; }
     .nav-links { display: none; }
-    #hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 4rem 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
-    .hero-right { min-height: 300px; }
+
+    #hero {
+      grid-template-columns: 1fr;
+      height: auto; min-height: 100vh;
+    }
+    .hero-left {
+      padding: 5rem 1.5rem 2rem;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      order: 1;
+    }
+    .hero-right {
+      order: 2;
+      padding: 2rem 1.5rem;
+      min-height: auto;
+      background: var(--warm-paper);
+      border-bottom: 1px solid var(--border);
+    }
+    .photo-card {
+      width: 200px;
+    }
+    .hero-photo-wrap {
+      width: 200px; height: 250px;
+    }
+    .hero-caption { width: 200px; }
+
     #about { grid-template-columns: 1fr; }
     .about-left, .about-right { padding: 3rem 1.5rem; border-right: none; }
     #skills, #projects, #experience, #education { padding: 3rem 1.5rem; }
@@ -453,7 +476,7 @@
     .yt-left, .yt-right, .contact-left, .contact-right { padding: 3rem 1.5rem; border-right: none; }
     .exp-grid { grid-template-columns: 1fr; }
     .exp-nav { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); }
-    .exp-nav-item { border-bottom: none; border-right: 1px solid var(--ink); min-width: 120px; }
+    .exp-nav-item { border-bottom: none; border-right: 1px solid rgba(30,26,22,0.15); min-width: 120px; }
     footer { padding: 1.5rem; flex-direction: column; gap: 0.3rem; text-align: center; }
   }
 </style>
