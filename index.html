@@ -130,12 +130,12 @@
   }
   .photo-card {
     display: flex; flex-direction: column;
-    width: 100%;
-    flex: 1;
+    width: 220px;
+    flex-shrink: 0;
   }
   .hero-photo-wrap {
-    width: 100%;
-    flex: 1;
+    width: 220px;
+    height: 270px;
     overflow: hidden;
     position: relative;
   }
@@ -153,8 +153,8 @@
     display: block;
   }
   .hero-caption {
-    width: 100%;
-    padding: 0.9rem 1.5rem;
+    width: 220px;
+    padding: 0.65rem 1rem;
     background: var(--ink);
     flex-shrink: 0;
   }
@@ -286,15 +286,24 @@
     font-size: 0.82rem; color: var(--ink); line-height: 1.6;
     font-family: 'Libre Baskerville', serif; font-style: italic;
   }
-  .project-link {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    margin-top: 1rem;
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--terracotta);
-    text-decoration: none; border-bottom: 1px solid var(--terracotta);
-    padding-bottom: 0.1rem; transition: opacity 0.2s;
+  .project-btns {
+    display: flex; gap: 0.7rem; margin-top: 1.2rem; flex-wrap: wrap;
   }
-  .project-link:hover { opacity: 0.7; }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .project-link.dashboard {
+    background: var(--terracotta); color: #fff;
+  }
+  .project-link.dashboard:hover { background: var(--terracotta-light); }
+  .project-link.code {
+    border: 1.5px solid var(--ink); color: var(--ink); background: transparent;
+  }
+  .project-link.code:hover { background: var(--ink); color: #fff; }
 
   /* ── EXPERIENCE ── */
   #experience { padding: 5rem 4rem; border-bottom: 1px solid var(--border); }
@@ -490,7 +499,6 @@
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
-    <li><a href="#youtube">YouTube</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -646,7 +654,9 @@
         <div class="project-tools">Python · Scikit-learn · Seaborn · Power BI · DAX</div>
         <p>Analyzed ~130,000 transit records from the City of Toronto, merged weather data, and built a regression model to identify delay predictors.</p>
         <div class="project-finding">Only 29% of trips ran on time. Nearly 30% experienced severe delays. Recommended increased bus frequency in February and on weekends.</div>
-        <a href="https://app.powerbi.com/groups/me/reports/83ed9126-8709-4514-9871-60481cc65c16/e8b6be9760910a78a4bc?experience=power-bi" target="_blank" class="project-link">View Dashboard →</a>
+        <div class="project-btns">
+          <a href="https://app.powerbi.com/groups/me/reports/83ed9126-8709-4514-9871-60481cc65c16/e8b6be9760910a78a4bc?experience=power-bi" target="_blank" class="project-link dashboard">View Dashboard →</a>
+        </div>
       </div>
     </div>
     <div class="project-card">
@@ -660,7 +670,10 @@
         <div class="project-tools">Python · SQL · Power BI</div>
         <p>Analyzed 2,233 customers across six countries with thorough SQL data cleaning and analytical modeling.</p>
         <div class="project-finding">Campaign 6 outperformed all others at 14.87%. Wines led at $678K. Customers without children consistently outspent those with children.</div>
-        <a href="https://app.powerbi.com/groups/me/reports/45fb7111-3f0c-48b3-b400-3eae9d37142c/daec7aca715a0d215a1c?experience=power-bi" target="_blank" class="project-link">View Dashboard →</a>
+        <div class="project-btns">
+          <a href="https://app.powerbi.com/groups/me/reports/45fb7111-3f0c-48b3-b400-3eae9d37142c/daec7aca715a0d215a1c?experience=power-bi" target="_blank" class="project-link dashboard">View Dashboard →</a>
+          <a href="https://github.com/tyagi-anjali/marketing_data_analysis" target="_blank" class="project-link code">View Code</a>
+        </div>
       </div>
     </div>
     <div class="project-card">
@@ -674,7 +687,10 @@
         <div class="project-tools">Python · SQL · Power BI</div>
         <p>Analyzed 3,900 retail transactions using Python and 10 SQL business queries covering revenue, segmentation, and subscription behavior.</p>
         <div class="project-finding">3,300 loyal customers — yet most were not subscribed, identifying a major retention opportunity.</div>
-        <a href="https://app.powerbi.com/groups/me/reports/d49e4e99-7f00-4053-9f4c-1c00bb233f6d/eee6f63b2ff0dab326cf?experience=power-bi" target="_blank" class="project-link">View Dashboard →</a>
+        <div class="project-btns">
+          <a href="https://app.powerbi.com/groups/me/reports/d49e4e99-7f00-4053-9f4c-1c00bb233f6d/eee6f63b2ff0dab326cf?experience=power-bi" target="_blank" class="project-link dashboard">View Dashboard →</a>
+          <a href="https://github.com/tyagi-anjali/customer_shopping_behavior_analysis" target="_blank" class="project-link code">View Code</a>
+        </div>
       </div>
     </div>
     <div class="project-card">
@@ -688,6 +704,9 @@
         <div class="project-tools">Azure Databricks · PySpark · Spark SQL</div>
         <p>Loaded 31,805 subscriber records from AWS S3 into Azure Databricks and ran Spark SQL queries across tariff plans and handset models.</p>
         <div class="project-finding">CAT 200, with 13,725 subscribers, accumulated 43,106 total dropped calls — a systemic quality issue.</div>
+        <div class="project-btns">
+          <a href="https://github.com/tyagi-anjali/telecom-subscriber-analysis" target="_blank" class="project-link code">View Code</a>
+        </div>
       </div>
     </div>
   </div>
@@ -740,13 +759,13 @@
 <!-- YOUTUBE -->
 <section id="youtube">
   <div class="yt-left">
-    <div class="yt-left-label">Content Creator</div>
-    <h2><em>Teaching</em><br>data to the world</h2>
-    <a href="https://www.youtube.com/@anjalityagi_ig" target="_blank" class="yt-btn">▶ &nbsp; Watch on YouTube</a>
+    <div class="yt-left-label">Beyond the Work</div>
+    <h2><em>Sharing</em><br>what I know</h2>
   </div>
   <div class="yt-right">
-    <p>I make videos breaking down SQL, Python, Power BI, and data analytics concepts into clear, accessible formats — because good data education should be free and available to everyone learning the field.</p>
-    <div class="yt-topics">
+    <p>I enjoy creating educational content about data analytics — breaking down SQL, Python, Power BI, and career topics into clear, accessible formats. I believe good data education should be free and available to everyone.</p>
+    <p style="margin-top:1rem; font-family:'Jost',sans-serif; font-size:0.85rem; color:var(--ink); font-style:normal;">If you're interested in seeing my content, feel free to reach out — I'm happy to share the link directly.</p>
+    <div class="yt-topics" style="margin-top:1.5rem;">
       <span class="yt-topic">SQL</span>
       <span class="yt-topic">Python</span>
       <span class="yt-topic">Power BI</span>
@@ -802,9 +821,7 @@
     <a href="https://linkedin.com/in/anjali-tyagi" target="_blank" class="contact-link">
       <span>in &nbsp; LinkedIn</span><span>→</span>
     </a>
-    <a href="https://www.youtube.com/@anjalityagi_ig" target="_blank" class="contact-link">
-      <span>▶ &nbsp; YouTube</span><span>→</span>
-    </a>
+
   </div>
 </section>
 
