@@ -183,14 +183,14 @@
   .btn-outline:hover { background: var(--ink); color: var(--off-white); }
 
   /* Right: photo + caption */
-  .hero-right {
+
+ .hero-right {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   background: var(--warm-paper);
   padding: 0;
   overflow: hidden;
   width: 100%;
-  text-align: center;
 }
 .photo-card {
   display: flex; flex-direction: column;
@@ -217,18 +217,7 @@
   object-fit: cover; object-position: center top;
   display: block;
 }
-.hero-caption {
-  width: 300px;
-  padding: 0.65rem 1rem;
-  background: var(--ink);
-  flex-shrink: 0;
-}
-  .hero-caption p {
-    font-size: 0.68rem; color: rgba(255,255,255,0.7);
-    line-height: 1.5; letter-spacing: 0.04em; text-align: center;
-  }
-  .hero-caption strong { color: var(--terracotta); font-weight: 500; }
-
+ 
   /* ── SECTION HEADINGS ── */
   .section-heading {
     display: inline-block;
@@ -536,15 +525,14 @@
       align-items: center;
       justify-content: center;
     }
-   .photo-card {
-      width: 240px;
-      margin: 0 auto;
-    }
-   .hero-photo-wrap {
-      width: 240px; height: 300px;
-    }
-   .hero-caption { width: 240px; }
- }
+  .photo-card {
+    width: 240px;
+    margin: 0 auto;
+  }
+  .hero-photo-wrap {
+    width: 240px; height: 300px;
+  }
+}
 
     #about { grid-template-columns: 1fr; }
     .about-left, .about-right { padding: 3rem 1.5rem; border-right: none; }
@@ -616,9 +604,6 @@
     <div class="photo-card">
       <div class="hero-photo-wrap">
         <img src="photo-output.jpg" alt="Anjali Tyagi">
-    </div>
-    <div class="hero-caption">
-      <p><strong>Anjali Tyagi</strong> — Data Analyst · SQL · Python · Power BI · Azure Databricks · Toronto, ON</p>
     </div>
     </div>
   </div>
@@ -1015,23 +1000,6 @@
       heroLeft.style.transform = `translateY(${y * 0.12}px)`;
     }
   }, { passive: true });
-
-  // ── Profile photo subtle 3D tilt (no translateY — keeps ::after line) ─
-  const photoWrap = document.querySelector('.hero-photo-wrap');
-  const heroRightEl = document.querySelector('.hero-right');
-  if (heroRightEl && photoWrap) {
-    heroRightEl.addEventListener('mousemove', e => {
-      const r = heroRightEl.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      photoWrap.style.transform = `scale(1.03) translate(${x * -6}px, ${y * -6}px)`;
-      photoWrap.style.transition = 'transform 0.15s ease';
-    });
-    heroRightEl.addEventListener('mouseleave', () => {
-      photoWrap.style.transform = 'none';
-      photoWrap.style.transition = 'transform 0.8s cubic-bezier(0.23,1,0.32,1)';
-    });
-  }
 
   // ── Magnetic buttons ─────────────────────────────────────────────────
   document.querySelectorAll('.btn-primary, .btn-outline, .yt-btn').forEach(btn => {
